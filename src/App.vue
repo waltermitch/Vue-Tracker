@@ -1,16 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> | 
-      <router-link :to="{name: 'register'}" >Register</router-link>
-    </div>
-    <router-view/>
+    <v-app>
+      <page-header/>
+      <v-content>
+        <v-container>
+          <router-view/>
+        </v-container>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
+<script>
+import PageHeader from '@/components/Header.vue'
+export default {
+  components: {
+    PageHeader
+  }
+}
+</script>
+
+
 <style lang="scss">
-#app {
+#appp {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
