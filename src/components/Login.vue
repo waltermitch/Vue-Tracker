@@ -31,7 +31,9 @@ export default {
         async handleLogin(){
             let credentials = {email: this.email, password: this.password}
             try {
-                await AuthenticationService.login(credentials)
+                const response = await AuthenticationService.login(credentials)
+                this.$store.dispatch('setToken', response.data.token)
+                this.$store.dispatch('setUser', response.data.user)
             } catch (err) {
                 this.error = err.response.data.error
             }

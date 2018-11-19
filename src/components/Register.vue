@@ -30,11 +30,11 @@ export default {
     },
     methods : {
         async handleRegister(){
+            let credentials = {email: this.email, password: this.password}
             try {
-                await AuthenticationService.register({
-                    email: this.email,
-                    password: this.password
-                })
+                const response = await AuthenticationService.register(credentials)
+                this.$store.dispatch('setToken', response.data.token)
+                this.$store.dispatch('setUser', response.data.user)
             } catch (error) {
                 this.error = error.response.data.error
             }
