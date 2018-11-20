@@ -1,26 +1,18 @@
 <template>
-    <v-layout row>
-        <v-flex xs6 offset-xs3>
-            <v-alert :value="error" color="error" icon="warning" class="mb-2">
-                {{error}}
-            </v-alert>
-            <div class="white elevation-2" justify-center>
-                <v-toolbar flat dense class="cyan" dark>
-                <v-toolbar-title class="white--text">Register</v-toolbar-title>
-                </v-toolbar>
-                <div class="pl-4 pr-4 pt-2 pb-2">
-                    <v-text-field label="Email" type="text" v-model="email"></v-text-field>
-                    <v-text-field label="Password" v-model="password" type="password"></v-text-field>
+    <panel title="Register">
+        <v-text-field label="Email" type="text" v-model="email"></v-text-field>
+        <v-text-field label="Password" v-model="password" type="password"></v-text-field>
 
-                    <v-btn class="cyan" dark @click="handleRegister()" type="submit">Create User</v-btn>
-                </div>
-            </div>
-        </v-flex>
-    </v-layout>
+        <v-btn class="cyan" dark @click="handleRegister()" type="submit">Create User</v-btn>
+    </panel>
 </template>
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import Panel from '@/components/Panel'
 export default {
+    components :{
+        Panel
+    },
     data () {
         return {
             email: '',
@@ -30,11 +22,11 @@ export default {
     },
     methods : {
         async handleRegister(){
+            let credentials = {email: this.email, password: this.password}
             try {
-                await AuthenticationService.register({
-                    email: this.email,
-                    password: this.password
-                })
+                const response = await AuthenticationService.register(credentials)
+                this.$store.dispatch('setToken', response.data.token)
+                this.$store.dispatch('setUser', response.data.user)
             } catch (error) {
                 this.error = error.response.data.error
             }
